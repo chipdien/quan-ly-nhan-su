@@ -2447,6 +2447,7 @@ body.nav-hide .nav-hide-btn{background:var(--pri-soft);border-color:var(--pri);c
 .ml-red{display:block;color:#c0392b;font-size:12px;line-height:1.45;margin:-2px 0 6px}.ml-red b{color:inherit}
 .tbl-card{margin-bottom:12px;display:flex;flex-direction:column;gap:6px;font-size:13px}.tbl-r{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;justify-content:space-between}.tbl-sel{width:auto;display:inline-block;padding:4px 8px;margin-left:6px}.tbl-bar{height:6px;border-radius:4px;background:var(--line,#e5e5e5);overflow:hidden}.tbl-bar i{display:block;height:100%;background:var(--pri,#2e7d32)}.tbl-bar.warn i{background:#c0392b}
 .dh-ed{display:flex;gap:6px;margin-top:6px}.dh-ed .btn{padding:2px 10px}
+.pq-qxh{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.45;margin:10px 0 0;padding:10px 12px;border-radius:10px;background:var(--soft,#f3f6ef)}.pq-qxh:empty{display:none}.pq-qxh svg{flex:none;margin-top:2px}
 .pq-cus{display:block;font-size:11.5px;color:#9a6a00;margin-top:3px}.pq-sec{margin:22px 0 10px}.pq-sec h3{margin:0 0 4px;font-size:15px}.pq-sec p{margin:0;font-size:12.5px}.pq-qx-top{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;font-size:13px}.pq-qx-w{max-height:58vh}.pq-qs{min-width:200px;padding:4px 8px;height:auto}.pq-qs.cus{border-color:#E8A33D;background:#FFF8EA;font-weight:600}.anv-pq{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}.anv-pq .btn{padding:2px 8px;font-size:12px}
 .tl-gt .tl-ro{align-items:flex-start}.tl-gt .tl-ro span{font-size:13px}.gt-pics{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}.gt-pic{border:1px solid var(--line);border-radius:10px;overflow:hidden;min-height:160px;display:flex;align-items:center;justify-content:center;background:var(--soft,#f6f6f4);color:var(--muted);font-size:13px}.gt-pic img{display:block;width:100%;max-height:60vh;object-fit:contain;background:#fff}.gt-pic a{display:block;width:100%}
 </style>
@@ -21330,7 +21331,7 @@ if (typeof module !== 'undefined') module.exports = XW;
       '<div class="field" style="grid-column:1/-1"><label>Phòng ban được xem <span id="pqPbNote" class="faint"></span></label><div class="pq-chk" id="pqPb"></div></div>' +
       '<div class="field"><label for="pqP1">' + (x ? 'Mật khẩu mới (để trống nếu giữ nguyên)' : 'Mật khẩu * (từ 8 ký tự, có chữ và số)') + '</label><input class="input" id="pqP1" type="password" autocomplete="new-password"></div>' +
       '<div class="field"><label for="pqP2">Nhập lại mật khẩu</label><input class="input" id="pqP2" type="password" autocomplete="new-password"></div></div>' +
-      '<p id="pqUMsg" class="tl-msg"></p><div class="link-row" style="justify-content:flex-end"><button class="btn" data-close>Hủy</button><button class="btn btn-primary" id="pqUOk">' + (x ? 'Lưu thay đổi' : 'Tạo tài khoản') + '</button></div>';
+      '<p id="pqUMsg" class="tl-msg"></p><div id="pqQxH" class="pq-qxh"></div><div class="link-row" style="justify-content:flex-end"><button class="btn" data-close>Hủy</button><button class="btn" id="pqUQx">Lưu và chỉnh quyền chi tiết</button><button class="btn btn-primary" id="pqUOk">' + (x ? 'Lưu thay đổi' : 'Tạo tài khoản') + '</button></div>';
     var m = modal(x ? 'Sửa tài khoản' : 'Thêm tài khoản', x ? x.user : 'Tài khoản vào phần mềm quản trị', body);
     function dvSel() { var all = $('#pqDv input[value=all]', m).checked; return all ? null : $$('#pqDv input:checked', m).map(function (i) { return i.value; }); }
     function drawPb(keep) {
@@ -21338,7 +21339,7 @@ if (typeof module !== 'undefined') module.exports = XW;
       $('#pqPb', m).innerHTML = '<label><input type="checkbox" value="*"' + (!chosen.filter(function (c) { return c !== '*' && list.indexOf(c) >= 0; }).length ? ' checked' : '') + '> Tất cả phòng ban</label>' + list.map(function (d) { return '<label><input type="checkbox" value="' + esc(d) + '"' + (chosen.indexOf(d) >= 0 ? ' checked' : '') + '> ' + esc(d) + '</label>'; }).join('');
       $('#pqPbNote', m).textContent = r && r.sys ? '' : r && r.pb ? '· vai trò này bắt buộc chọn phòng ban' : '· chọn phòng ban thì tài khoản chỉ xem, không sửa';
     }
-    drawPb(cur.pb || []);
+    drawPb(cur.pb || []); pqQxHint(m, x);
     $('#pqDv', m).addEventListener('change', function (ev) { var t = ev.target; if (t.value === 'all' && t.checked) $$('#pqDv input', m).forEach(function (i) { if (i.value !== 'all') i.checked = false; }); else if (t.checked) $('#pqDv input[value=all]', m).checked = false; if (!$$('#pqDv input:checked', m).length) $('#pqDv input[value=all]', m).checked = true; drawPb(); });
     $('#pqPb', m).addEventListener('change', function (ev) { var t = ev.target; if (t.value === '*' && t.checked) $$('#pqPb input', m).forEach(function (i) { if (i.value !== '*') i.checked = false; }); else if (t.checked) $('#pqPb input[value="*"]', m).checked = false; if (!$$('#pqPb input:checked', m).length) $('#pqPb input[value="*"]', m).checked = true; });
     $('#pqRl', m).addEventListener('change', function () { drawPb(); });
@@ -21364,8 +21365,8 @@ if (typeof module !== 'undefined') module.exports = XW;
       var btn = this; btn.disabled = true;
       (p1 ? pqSetPw(o, p1) : Promise.resolve()).then(function () {
         if (!x) s.users.push(o); pqRaw(); log('Phân quyền: ' + (x ? 'sửa' : 'thêm') + ' tài khoản ' + un + ' (' + (r ? r.t : '') + ')'); m.close(); toast(x ? 'Đã lưu tài khoản ' + un : 'Đã tạo tài khoản ' + un, 'ok');
-        if (o.id === PQ.uid) { S.settings.user = { name: o.name }; pqScope(); } render();
-      }, function (er) { btn.disabled = false; msg.textContent = er && er.message || 'Chưa lưu được'; });
+        if (o.id === PQ.uid) { S.settings.user = { name: o.name }; pqScope(); } render(); pqQxAfter(o);
+      }, function (er) { PQ.afterQx = 0; btn.disabled = false; msg.textContent = er && er.message || 'Chưa lưu được'; });
     });
   };
   /* 0.8.1 – thêm / sửa tài khoản khi chạy trên máy chủ: tài khoản = Mã nhân viên, mật khẩu lưu trên máy chủ (không lưu trong dữ liệu phần mềm) */
@@ -21383,7 +21384,7 @@ if (typeof module !== 'undefined') module.exports = XW;
       '<div class="field"><label for="pqP1">' + (needPw ? 'Mật khẩu tạm * (từ 8 ký tự, có chữ và số)' : 'Đặt lại mật khẩu (để trống nếu giữ nguyên)') + '</label><input class="input" id="pqP1" type="password" autocomplete="new-password"></div>' +
       '<div class="field"><label for="pqP2">Nhập lại mật khẩu</label><input class="input" id="pqP2" type="password" autocomplete="new-password"></div></div>' +
       '<p class="faint" style="font-size:12.5px;margin:8px 0 0">Báo mật khẩu tạm riêng cho người đó. Ở lần đăng nhập đầu (trên ứng dụng hoặc trang quản trị), họ phải đặt mật khẩu của riêng mình.</p>' +
-      '<p id="pqUMsg" class="tl-msg"></p><div class="link-row" style="justify-content:flex-end"><button class="btn" data-close>Hủy</button><button class="btn btn-primary" id="pqUOk">' + (unlock ? 'Mở khóa' : x ? 'Lưu thay đổi' : 'Tạo tài khoản') + '</button></div>';
+      '<p id="pqUMsg" class="tl-msg"></p><div id="pqQxH" class="pq-qxh"></div><div class="link-row" style="justify-content:flex-end"><button class="btn" data-close>Hủy</button><button class="btn" id="pqUQx">Lưu và chỉnh quyền chi tiết</button><button class="btn btn-primary" id="pqUOk">' + (unlock ? 'Mở khóa' : x ? 'Lưu thay đổi' : 'Tạo tài khoản') + '</button></div>';
     var m = modal(x ? (unlock ? 'Mở khóa tài khoản' : 'Sửa tài khoản') : 'Thêm tài khoản', x ? (x.nv || x.user) : 'Tài khoản chung: ứng dụng nhân viên và trang quản trị', body);
     function dvSel() { var all = $('#pqDv input[value=all]', m).checked; return all ? null : $$('#pqDv input:checked', m).map(function (i) { return i.value; }); }
     function drawPb(keep) {
@@ -21391,7 +21392,7 @@ if (typeof module !== 'undefined') module.exports = XW;
       $('#pqPb', m).innerHTML = '<label><input type="checkbox" value="*"' + (!chosen.filter(function (c) { return c !== '*' && list.indexOf(c) >= 0; }).length ? ' checked' : '') + '> Tất cả phòng ban</label>' + list.map(function (d) { return '<label><input type="checkbox" value="' + esc(d) + '"' + (chosen.indexOf(d) >= 0 ? ' checked' : '') + '> ' + esc(d) + '</label>'; }).join('');
       $('#pqPbNote', m).textContent = r && r.sys ? '' : r && r.pb ? '· vai trò này bắt buộc chọn phòng ban' : '· chọn phòng ban thì tài khoản chỉ xem, không sửa';
     }
-    drawPb(cur.pb || []);
+    drawPb(cur.pb || []); pqQxHint(m, x);
     $('#pqDv', m).addEventListener('change', function (ev) { var t = ev.target; if (t.value === 'all' && t.checked) $$('#pqDv input', m).forEach(function (i) { if (i.value !== 'all') i.checked = false; }); else if (t.checked) $('#pqDv input[value=all]', m).checked = false; if (!$$('#pqDv input:checked', m).length) $('#pqDv input[value=all]', m).checked = true; drawPb(); });
     $('#pqPb', m).addEventListener('change', function (ev) { var t = ev.target; if (t.value === '*' && t.checked) $$('#pqPb input', m).forEach(function (i) { if (i.value !== '*') i.checked = false; }); else if (t.checked) $('#pqPb input[value="*"]', m).checked = false; if (!$$('#pqPb input:checked', m).length) $('#pqPb input[value="*"]', m).checked = true; });
     $('#pqRl', m).addEventListener('change', function () { drawPb(); });
@@ -21413,10 +21414,19 @@ if (typeof module !== 'undefined') module.exports = XW;
       svTkPush(o, r, p1 || '').then(function () {
         if (!x) s.users.push(o); pqRaw(); log('Phân quyền: ' + (x ? (unlock ? 'mở khóa' : 'sửa') : 'thêm') + ' tài khoản ' + code + ' (' + (r ? r.t : '') + ')' + (p1 ? ' – đặt mật khẩu tạm' : '')); m.close();
         toast(x ? (unlock ? 'Đã mở khóa tài khoản ' + code : 'Đã lưu tài khoản ' + code) : 'Đã tạo tài khoản ' + code, 'ok', p1 ? 'Báo mật khẩu tạm riêng cho ' + o.name + '. Họ đăng nhập ứng dụng nhân viên hoặc trang quản trị bằng mã ' + code + ', rồi đổi mật khẩu.' : '');
-        pqScope(); render();
-      }, function (er) { o.off = wasOff; btn.disabled = false; msg.textContent = er && er.message || 'Chưa lưu được'; });
+        pqScope(); render(); pqQxAfter(o);
+      }, function (er) { PQ.afterQx = 0; o.off = wasOff; btn.disabled = false; msg.textContent = er && er.message || 'Chưa lưu được'; });
     });
   }
+  /* 25/11/2026 20:02 (anh): gán vai trò xong chỉnh được quyền chi tiết ngay – mặc định theo vai trò, điều chỉnh riêng từng người */
+  function pqQxHint(m, x) {
+    var h = $('#pqQxH', m), b = $('#pqUQx', m), sel = $('#pqRl', m); if (!h || !sel) return;
+    var upd = function () { var r = pqRole(sel.value), n = x && x.role === sel.value ? pqCusN(x) : 0; b.hidden = !r || !!r.sys;
+      h.innerHTML = !r ? '' : r.sys ? '<span class="faint">Vai trò ' + esc(r.t) + ' có toàn quyền.</span>' : ic('info', 15) + '<span>Quyền mặc định theo vai trò <b>' + esc(r.t) + '</b>' + (n ? ', người này đang <b>tùy chỉnh ' + n + ' mục</b>' : '') + '. Muốn điều chỉnh riêng cho người này: bấm <b>Lưu và chỉnh quyền chi tiết</b>.</span>' + (x && x.role !== sel.value && pqCusN(x) ? '<br><span class="down">Đổi vai trò: phần tùy chỉnh cũ vẫn giữ, xem lại ở bước chỉnh chi tiết.</span>' : ''); };
+    sel.addEventListener('change', upd); upd();
+    b.addEventListener('click', function () { PQ.afterQx = 1; var ok = $('#pqUOk', m); ok.click(); if (document.body.contains(m) && !ok.disabled) PQ.afterQx = 0; });
+  }
+  function pqQxAfter(o) { if (!PQ.afterQx) return; PQ.afterQx = 0; var r = pqRole(o.role); if (r && !r.sys) setTimeout(function () { ACTS['pq-qx'](null, o.id); }, 60); }
   ACTS['pq-gan'] = function (a, key) { // 25/11/2026 1.0.5: gán vai trò cho người đang có tài khoản ứng dụng nhân viên
     if (!pqOnlyAdmin()) return; var k = String(key).split('|'), uid = k[0], code = k.slice(1).join('|'), x = pqByNv(code);
     if (x) { ACTS['pq-user'](null, x.id); return; }
