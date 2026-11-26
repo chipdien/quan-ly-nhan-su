@@ -19406,8 +19406,9 @@ if (typeof module !== 'undefined') module.exports = XW;
     // cột: tâm các tiêu đề ÔĐ, TS · HTTT · BHYT · BHTN · BNN · CỘNG
     // 22/11/2026 (1.0.4): tìm tiêu đề cột trên đúng hàng có chữ CỘNG; nhận cả mẫu C12 cũ theo QĐ 595 (BHXH gộp 1 cột, cột BHTNLĐ – vd BHXH Cà Mau)
     var cols = null, gop = 0;
+    // 26/11/2026: tiêu đề cột có thể 2–3 tầng (BHXH ở trên, ÔĐ, TS / HTTT / BNN ở dưới hàng CỘNG – vd BHXH cơ sở Bạc Liêu, Cà Mau) → lấy các chữ trong khoảng ±14 quanh hàng CỘNG
     items.filter(function (x) { return /^CỘNG$/i.test(x.s.trim()); }).some(function (cg) {
-      var rw = items.filter(function (x) { return x.p === cg.p && Math.abs(x.y - cg.y) <= 4; }), hd = function (re) { var t = rw.filter(function (x) { return re.test(x.s.trim()); })[0]; return t ? t.x + t.w / 2 : null; };
+      var rw = items.filter(function (x) { return x.p === cg.p && Math.abs(x.y - cg.y) <= 14; }), hd = function (re) { var t = rw.filter(function (x) { return re.test(x.s.trim()); })[0]; return t ? t.x + t.w / 2 : null; };
       var od = hd(/^ÔĐ,?\s*TS$/i), ht = hd(/^HTTT$/i), xh = hd(/^BHXH$/i), yt = hd(/^BHYT$/i), tn = hd(/^BHTN$/i), ld = hd(/^BNN$/i) || hd(/^BHTNL[ĐD]/i) || hd(/^TNLĐ/i), cn = cg.x + cg.w / 2;
       if (od != null && ht != null && yt != null && tn != null && ld != null) { cols = [od, ht, yt, tn, ld, cn]; return true; }
       if (xh != null && yt != null && tn != null && ld != null) { cols = [xh, null, yt, tn, ld, cn]; gop = 1; return true; }
