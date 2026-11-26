@@ -1,4 +1,4 @@
-# Phần mềm quản lý nhân sự toàn diện – Quản trị tử tế
+# Phần mềm quản lý nhân sự toàn diện – Quản trị tử tế 
 
 Phần mềm quản lý nhân sự toàn diện miễn phí, mã nguồn mở, viết bằng tiếng Việt cho doanh nghiệp nhỏ và vừa: hồ sơ, hợp đồng, chấm công, nghỉ phép, lương, bảo hiểm xã hội, tuyển dụng, hội nhập, đào tạo nội bộ, tài sản, thông tin chung.
 
